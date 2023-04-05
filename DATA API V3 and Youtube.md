@@ -45,44 +45,40 @@ from wordcloud import WordCloud
 ```
 ## Dataset Collection and API connection:
 
-I first created a project on Google Developers Console, then requested an authorization credential (API key). Afterwards, I enabled Youtube API for my application, so that I can send API requests to Youtube API services. Then, I went on Youtube and checked the channel ID of each of the channels that I would like to include in my research scope (using their URLs).
+Step 1: create a project on Google Developers Console.
+Step 2: Request an authorization credential (API key).
+Step 3: Enable API.
+Step 4: Collect channel IDs to start research on them. 
 
 
 ```python 
 
-
+# Connecting to the DATA v3 API key
+# Parameters: 
+   # youtube: the build object from googleapiclient.discovery
+   # channels_ids: list of channel IDs
+    
 api_key = 'AIzaSyB-4NIQtecQPbRX7TWKphThkb9_Brh2wL4' 
 
-channel_ids = ['UCtYLUTtgS3k1Fg4y5tAhLbw', # Statquest
-               'UCCezIgC97PvUuR4_gbFUs5g', # Corey Schafer
-               'UCfzlCWGWYyIQ0aLC5w48gBQ', # Sentdex
-               'UCNU_lfiiWBdtULKOw6X0Dig', # Krish Naik
-               'UCzL_0nIe8B4-7ShhVPfJkgw', # DatascienceDoJo
-               'UCLLw7jmFsvfIVaUFsLs8mlQ', # Luke Barousse 
-               'UCiT9RITQ9PW6BhXK0y2jaeg', # Ken Jee
-               'UC7cs8q-gJRlGwj4A8OmCmXg', # Alex the analyst
-               'UC2UXDak6o7rBm23k3Vv5dww', # Tina Huang
+
+channel_ids = ['UCJk9mjbfuZ3k7oiWLlbKYFA', # Persian Rap Reaction
+               'CB0qQXpkEjVK2_yd5w-Khgw', # RealPelmx
+               'UCoOjmdECYvybtOOKtlwvsAw', # RadioActive Zone
+               'UCV_bYCslgWyIZWH_Jita9rw', # MA2YAR TV
               ]
 
 youtube = build('youtube', 'v3', developerKey=api_key)
+
 
 
 ```
 Then to collect data from selected channels I can write following functions:
 
 ```python 
+
+# Channel stats
 def get_channel_stats(youtube, channel_ids):
-    """
-    Get channel statistics: title, subscriber count, view count, video count, upload playlist
-    Params:
-    
-    youtube: the build object from googleapiclient.discovery
-    channels_ids: list of channel IDs
-    
-    Returns:
-    Dataframe containing the channel statistics for all channels in the provided list: title, subscriber count, view count, video count, upload playlist
-    
-    """
+
     all_data = []
     request = youtube.channels().list(
                 part='snippet,contentDetails,statistics',
@@ -98,19 +94,12 @@ def get_channel_stats(youtube, channel_ids):
         all_data.append(data)
     
     return pd.DataFrame(all_data)
+    
+# Returns:
+   # Dataframe containing the channel statistics for all channels in the provided list: title, subscriber count, view count, video count, upload playlist.
+
 
 def get_video_ids(youtube, playlist_id):
-    """
-    Get list of video IDs of all videos in the given playlist
-    Params:
-    
-    youtube: the build object from googleapiclient.discovery
-    playlist_id: playlist ID of the channel
-    
-    Returns:
-    List of video IDs of all videos in the playlist
-    
-    """
     
     request = youtube.playlistItems().list(
                 part='contentDetails',
@@ -145,19 +134,7 @@ def get_video_ids(youtube, playlist_id):
     return video_ids
 
 def get_video_details(youtube, video_ids):
-    """
-    Get video statistics of all videos with given IDs
-    Params:
-    
-    youtube: the build object from googleapiclient.discovery
-    video_ids: list of video IDs
-    
-    Returns:
-    Dataframe with statistics of videos, i.e.:
-        'channelTitle', 'title', 'description', 'tags', 'publishedAt'
-        'viewCount', 'likeCount', 'favoriteCount', 'commentCount'
-        'duration', 'definition', 'caption'
-    """
+
         
     all_video_info = []
     
@@ -190,15 +167,7 @@ def get_video_details(youtube, video_ids):
 def get_comments_in_videos(youtube, video_ids):
     """
     Get top level comments as text from all videos with given IDs (only the first 10 comments due to quote limit of Youtube API)
-    Params:
-    
-    youtube: the build object from googleapiclient.discovery
-    video_ids: list of video IDs
-    
-    Returns:
-    Dataframe with video IDs and associated top level comment in text.
-    
-    """
+
     all_comments = []
     
     for video_id in video_ids:
@@ -226,5 +195,7 @@ To get channel statistics:
 
 channel_data = get_channel_stats(youtube, channel_ids)
 channel_data
+
 ```
+
 
