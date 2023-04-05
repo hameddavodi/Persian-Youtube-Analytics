@@ -1,10 +1,6 @@
 # Youtube-Analytics
 
-## Introduction
-
 In this repository, I will be discussing how to use the YouTube Data API to collect data from YouTube and then analyze that data to glean insights about YouTube as a platform. I will first go over what the YouTube Data API is and how to set it up. Then, I will write a Python script to collect data from YouTube channels. Finally, I will analyze the collected data to answer some questions about YouTube.
-
-## Methodology
 
 The DATA API v3 is the latest version of YouTube’s Application Programming Interface. This newer version gives developers more control over their applications and provides better performance and stability. 
 First, we need to set up our development environment. We will be using Python 3 for this project. If you don’t have Python 3 installed on your system, you can download it from the official Python website. We also need to install the Google APIs Client Library for Python. This library will allow us to interact with YouTube’s Data API. To install this library, run the following command in your terminal:
