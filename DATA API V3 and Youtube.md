@@ -250,3 +250,48 @@ video_df.to_csv('video_data_top10_channels.csv')
 comments_df.to_csv('comments_data_top10_channels.csv')
 ```
 
+In this step, we convert these count columns into integer.
+
+```python
+cols = ['viewCount', 'likeCount',  'commentCount']
+video_df[cols] = video_df[cols].apply(pd.to_numeric, errors='coerce', axis=1)
+```
+
+
+I want to enrich the data for further analyses, for example:
+
+  -  create published date column with another column showing the day in the week the video was published, which will be useful for later analysis.
+
+  -  convert video duration to seconds instead of the current default string format
+
+  -  calculate number of tags for each video
+
+  -  calculate comments and likes per 1000 view ratio
+
+  -  calculate title character length
+```python
+# Create publish day (in the week) column
+video_df['publishedAt'] =  video_df['publishedAt'].apply(lambda x: parser.parse(x)) 
+video_df['pushblishDayName'] = video_df['publishedAt'].apply(lambda x: x.strftime("%A")) 
+
+# convert duration to seconds
+video_df['durationSecs'] = video_df['duration'].apply(lambda x: isodate.parse_duration(x))
+video_df['durationSecs'] = video_df['durationSecs'].astype('timedelta64[s]')
+
+# Add number of tags
+video_df['tagsCount'] = video_df['tags'].apply(lambda x: 0 if x is None else len(x))
+
+# Comments and likes per 1000 view ratio
+video_df['likeRatio'] = video_df['likeCount']/ video_df['viewCount'] * 1000
+video_df['commentRatio'] = video_df['commentCount']/ video_df['viewCount'] * 1000
+
+# Title character length
+video_df['titleLength'] = video_df['title'].apply(lambda x: len(x))
+
+```
+
+## Views distribution per channel:
+
+
+
+
