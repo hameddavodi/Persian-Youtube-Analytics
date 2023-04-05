@@ -292,6 +292,86 @@ video_df['titleLength'] = video_df['title'].apply(lambda x: len(x))
 
 ## Views distribution per channel:
 
+```python
+plt.rcParams['figure.figsize'] = (18, 6)
+sns.violinplot(video_df['channelTitle'], video_df['viewCount'], palette = 'pastel')
+plt.title('Views per channel', fontsize = 14)
+plt.show()
+```
+## Does the number of likes and comments matter for a video to get more views?
+
+```python
+fig, ax =plt.subplots(1,2)
+sns.scatterplot(data = video_df, x = "commentCount", y = "viewCount", ax=ax[0])
+sns.scatterplot(data = video_df, x = "likeCount", y = "viewCount", ax=ax[1])
+```
+
+
+Now we will take a look at the correlation if we look at the comment ratio and like ratio instead of the absolute number.
+
+
+```python
+fig, ax =plt.subplots(1,2)
+sns.scatterplot(data = video_df, x = "commentRatio", y = "viewCount", ax=ax[0])
+sns.scatterplot(data = video_df, x = "likeRatio", y = "viewCount", ax=ax[1])
+```
+
+## Does the video duration matter for views and interaction (likes/ comments)?
+
+```python
+sns.histplot(data=video_df[video_df['durationSecs'] < 10000], 
+```
+
+
+Now we plot the duration against comment count and like count. It can be seen that actually shorter videos tend to get more likes and comments than very long videos.
+```python
+fig, ax =plt.subplots(1,2)
+sns.scatterplot(data = video_df, x = "durationSecs", y = "commentCount", ax=ax[0])
+sns.scatterplot(data = video_df, x = "durationSecs", y = "likeCount", ax=ax[1])
+```
+
+
+## Does title length matter for views?
+
+
+
+There is no clear relationship between title length and views as seen the scatterplot below, but most-viewed videos tend to have average title length of 30-70 characters.
+
+```python
+sns.scatterplot(data = video_df, x = "titleLength", y = "viewCount")
+```
+
+## Wordcloud for words in title:
+
+
+
+As I'm interested to see what the creators are making videos about and which terms most frequently appear in their video titles, I will create a wordcloud for the most common words. We first need to remove the stopwords such as "you", "I", "the", etc. which do note contribute a lot to the meaning of the title.
+```python
+stop_words = set(stopwords.words('english'))
+video_df['title_no_stopwords'] = video_df['title'].apply(lambda x: [item for item in str(x).split() if item not in stop_words])
+
+all_words = list([a for b in video_df['title_no_stopwords'].tolist() for a in b])
+all_words_str = ' '.join(all_words) 
+
+def plot_cloud(wordcloud):
+    plt.figure(figsize=(30, 20))
+    plt.imshow(wordcloud) 
+    plt.axis("off");
+
+wordcloud = WordCloud(width = 2000, height = 1000, random_state=1, background_color='black', 
+                      colormap='viridis', collocations=False).generate(all_words_str)
+plot_cloud(wordcloud)
+```
+
+
+
+References/ Resources used:
+
+[1] Youtube API. Avaiable at https://developers.google.com/youtube/v3
+
+[2] Converting video durations to time function. https://stackoverflow.com/questions/15596753/how-do-i-get-video-durations-with-youtube-api-version-3
+
+[3] P. Covington, J. Adams, E. Sargin. The youtube video recommendation system. In Proceedings of the Fourth ACM Conference on Recommender Systems, RecSys '16, pages 191-198, New York, NY, USA, 2016. ACM.
 
 
 
