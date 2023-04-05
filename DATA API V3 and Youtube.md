@@ -1,4 +1,4 @@
-## Exploratory Data Analysing for Persian Rap Reaction Youtubers
+## Exploratory Data Analysing for Persian Youtubers
 
 Explanatory Data Analysis (EDA) is a crucial step in data analysis that helps to understand the data and extract meaningful insights from it. It is a process of summarizing the main characteristics of a dataset using visual methods such as histograms, scatter plots, box plots, etc., and identifying patterns, trends, and relationships between variables.
 
