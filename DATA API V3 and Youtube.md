@@ -77,6 +77,7 @@ Then to collect data from selected channels I can write following functions:
 ```python 
 
 # Channel stats
+
 def get_channel_stats(youtube, channel_ids):
 
     all_data = []
@@ -98,7 +99,7 @@ def get_channel_stats(youtube, channel_ids):
 # Returns:
    # Dataframe containing the channel statistics for all channels in the provided list: title, subscriber count, view count, video count, upload playlist.
 
-
+# Video IDs
 def get_video_ids(youtube, playlist_id):
     
     request = youtube.playlistItems().list(
@@ -133,6 +134,8 @@ def get_video_ids(youtube, playlist_id):
         
     return video_ids
 
+# Vido Details
+
 def get_video_details(youtube, video_ids):
 
         
@@ -163,10 +166,8 @@ def get_video_details(youtube, video_ids):
             all_video_info.append(video_info)
             
     return pd.DataFrame(all_video_info)
-
+# Comments
 def get_comments_in_videos(youtube, video_ids):
-    """
-    Get top level comments as text from all videos with given IDs (only the first 10 comments due to quote limit of Youtube API)
 
     all_comments = []
     
@@ -198,4 +199,54 @@ channel_data
 
 ```
 
+Some Other type changes:
+
+```python
+# Convert count columns to numeric columns
+numeric_cols = ['subscribers', 'views', 'totalVideos']
+channel_data[numeric_cols] = channel_data[numeric_cols].apply(pd.to_numeric, errors='coerce')
+
+
+sns.set(rc={'figure.figsize':(10,8)})
+ax = sns.barplot(x='channelName', y='subscribers', data=channel_data.sort_values('subscribers', ascending=False))
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
+plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
+
+
+
+ax = sns.barplot(x='channelName', y='views', data=channel_data.sort_values('views', ascending=False))
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
+plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
+```
+and creating dataframes:
+
+```python
+# Create a dataframe with video statistics and comments from all channels
+
+video_df = pd.DataFrame()
+comments_df = pd.DataFrame()
+
+for c in channel_data['channelName'].unique():
+    print("Getting video information from channel: " + c)
+    playlist_id = channel_data.loc[channel_data['channelName']== c, 'playlistId'].iloc[0]
+    video_ids = get_video_ids(youtube, playlist_id)
+    
+    # get video data
+    video_data = get_video_details(youtube, video_ids)
+    # get comment data
+    comments_data = get_comments_in_videos(youtube, video_ids)
+
+    # append video data together and comment data toghether
+    video_df = pd.concat([video_data], ignore_index=True)
+    comments_df = pd.concat([comments_data], ignore_index=True)
+```
+Note: In this step we could use `video_df = video_df.append(video_data, ignore_index=True)`, but in some cases I got an error and then I used concat to tackle the problem.
+
+So to prevent further use of quotas of API key lets save data in csv files:
+
+```python
+# Write video data to CSV file for future references
+video_df.to_csv('video_data_top10_channels.csv')
+comments_df.to_csv('comments_data_top10_channels.csv')
+```
 
