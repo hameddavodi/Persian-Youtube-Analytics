@@ -1,16 +1,19 @@
 ## Exploratory Data Analysing for Persian Rap Reaction Youtubers
 
-Within this project, I would like to explore the following:
-- Getting to know Youtube API and how to obtain video data.
-- Analyzing video data and verify different common "myths" about what makes a video do well on Youtube, for example:
-- Does the number of likes and comments matter for a video to get more views?
-- Does the video duration matter for views and interaction (likes/ comments)?
-- Does title length matter for views?
-- How many tags do good performing videos have? What are the common tags among these videos?
-- Across all the creators I take into consideration, how often do they upload new videos? On which days in the week?
-- Explore the trending topics using NLP techniques
-- Which popular topics are being covered in the videos (e.g. using wordcloud for video titles)?
-- Which questions are being asked in the comment sections in the videos
+Explanatory Data Analysis (EDA) is a crucial step in data analysis that helps to understand the data and extract meaningful insights from it. It is a process of summarizing the main characteristics of a dataset using visual methods such as histograms, scatter plots, box plots, etc., and identifying patterns, trends, and relationships between variables.
+
+In this project, I plan to explore the following:
+
+  - Learn about Youtube API and how to obtain video data.
+  - Analyze video data and verify different common “myths” about   what makes a video do well on Youtube. For example:
+  - Does the number of likes and comments matter for a video to get more views?
+  - Does the video duration matter for views and interaction (likes/ comments)?
+  - Does title length matter for views?
+  - How many tags do good performing videos have? What are the common tags among these videos?
+  - Across all the creators I take into consideration, how often do they upload new videos? On which days in the week?
+  - Explore the trending topics using NLP techniques
+  - Which popular topics are being covered in the videos (e.g. using wordcloud for video titles)?
+  - Which questions are being asked in the comment sections in the videos?
 
 Also pre-requisites libraries for this project are:
 
@@ -42,7 +45,9 @@ from wordcloud import WordCloud
 ```
 ## Dataset Collection and API connection:
 
-I first created a project on Google Developers Console, then requested an authorization credential (API key). Afterwards, I enabled Youtube API for my application, so that I can send API requests to Youtube API services. Then, I went on Youtube and checked the channel ID of each of the channels that I would like to include in my research scope (using their URLs). 
+I first created a project on Google Developers Console, then requested an authorization credential (API key). Afterwards, I enabled Youtube API for my application, so that I can send API requests to Youtube API services. Then, I went on Youtube and checked the channel ID of each of the channels that I would like to include in my research scope (using their URLs).
+
+
 ```python 
 
 
