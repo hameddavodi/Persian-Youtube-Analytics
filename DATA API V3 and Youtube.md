@@ -13,8 +13,6 @@ In this project, I plan to explore the following:
 Also pre-requisites libraries for this project are:
 
 ```python 
-
-
 import pandas as pd
 import numpy as np
 from dateutil import parser
@@ -28,7 +26,6 @@ sns.set(style="darkgrid", color_codes=True)
 
 # Google API
 from googleapiclient.discovery import build
-
 ```
 ## Dataset Collection and API connection:
 
@@ -369,20 +366,12 @@ sns.scatterplot(data = video_df, x = "likeCount", y = "viewCount", ax=ax[1])
 
 <img width="548" alt="Screenshot 2023-04-06 at 14 53 24" src="https://user-images.githubusercontent.com/109058050/230384272-4ae98a61-ffcd-4230-8b10-5d4b9c3b1371.png">
 
-Now we will take a look at the correlation if we look at the comment ratio and like ratio instead of the absolute number.
-
-
-```python
-fig, ax =plt.subplots(1,2)
-sns.scatterplot(data = video_df, x = "commentRatio", y = "viewCount", ax=ax[0])
-sns.scatterplot(data = video_df, x = "likeRatio", y = "viewCount", ax=ax[1])
-```
-
-<img width="541" alt="Screenshot 2023-04-06 at 14 54 00" src="https://user-images.githubusercontent.com/109058050/230384411-54cc96af-c84d-423e-9b55-8e822dad179c.png">
-
 ## Does the video duration matter for views and interaction (likes/ comments)?
 
 ```python
+# first convert float64 to int
+video_df['viewCount'] = video_df['viewCount'].astype(int)
+
 sns.scatterplot(data = video_df, x = "durationSecs", y = "viewCount")
 ```
 
