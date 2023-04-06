@@ -186,12 +186,8 @@ channel_data
 
 ```
 This code produce the following outcome:
-`
- 	channelName 	subscribers 	views 	totalVideos 	playlistId
-0 	Persian Rap Reaction 	41500 	18096597 	914 	UUJk9mjbfuZ3k7oiWLlbKYFA
-1 	MA2YAR TV 	9030 	623573 	47 	UUV_bYCslgWyIZWH_Jita9rw
-2 	RadioActive Zone 	131000 	58079956 	1297 	UUoOjmdECYvybtOOKtlwvsAw
-`
+
+<img width="547" alt="Screenshot 2023-04-06 at 14 42 50" src="https://user-images.githubusercontent.com/109058050/230381872-4cc0c56b-03f8-44ea-9bab-d98c2f75be7e.png">
 
 Some Other type changes:
 
@@ -206,12 +202,14 @@ ax = sns.barplot(x='channelName', y='subscribers', data=channel_data.sort_values
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
 plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
 
-
-
 ax = sns.barplot(x='channelName', y='views', data=channel_data.sort_values('views', ascending=False))
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
 plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
 ```
+
+<img width="551" alt="Screenshot 2023-04-06 at 14 43 28" src="https://user-images.githubusercontent.com/109058050/230381995-74f0088a-f28d-4304-9828-efd4e2274413.png">
+
+
 and creating dataframes:
 
 ```python
@@ -234,6 +232,15 @@ for c in channel_data['channelName'].unique():
     video_df = pd.concat([video_data], ignore_index=True)
     comments_df = pd.concat([comments_data], ignore_index=True)
 ```
+comments_data
+> a table of "1297 rows × 2 columns"
+
+video_data
+> a table of "1297 rows × 13 columns"
+
+and we have turned them into dataframes
+
+
 Note: In this step we could use `video_df = video_df.append(video_data, ignore_index=True)`, but in some cases I got an error and then I used concat to tackle the problem.
 
 So to prevent further use of quotas of API key lets save data in csv files:
@@ -252,35 +259,110 @@ video_df[cols] = video_df[cols].apply(pd.to_numeric, errors='coerce', axis=1)
 ```
 
 
-I want to enrich the data for further analyses, for example:
+I aim to enhance the data for future examinations by performing the following tasks:
 
-  -  create published date column with another column showing the day in the week the video was published, which will be useful for later analysis.
+   - Generating a new column that displays the published date of the video and also indicates the day of the week on which it was published. This information will be beneficial for future analysis.
 
-  -  convert video duration to seconds instead of the current default string format
+   - Transforming the format of the video duration from a string representation to seconds.
 
-  -  calculate number of tags for each video
+   - Computing the number of tags for each video.
 
-  -  calculate comments and likes per 1000 view ratio
+   - Calculating the ratio of comments and likes per 1000 view count.
 
-  -  calculate title character length
+   - Determining the length of the title in terms of the number of characters.
+
+
 ```python
 # Create publish day (in the week) column
 video_df['publishedAt'] =  video_df['publishedAt'].apply(lambda x: parser.parse(x)) 
 video_df['pushblishDayName'] = video_df['publishedAt'].apply(lambda x: x.strftime("%A")) 
-
+'''
+0       Wednesday
+1       Wednesday
+2       Wednesday
+3         Tuesday
+4         Tuesday
+          ...    
+1292      Tuesday
+1293       Monday
+1294       Monday
+1295       Monday
+1296     Saturday
+Name: pushblishDayName, Length: 1297, dtype: object
+'''
 # convert duration to seconds
 video_df['durationSecs'] = video_df['duration'].apply(lambda x: isodate.parse_duration(x))
 video_df['durationSecs'] = video_df['durationSecs'].astype('timedelta64[s]')
 
+'''
+0      0 days 00:11:42
+1      0 days 00:00:55
+2      0 days 00:18:34
+3      0 days 00:00:36
+4      0 days 00:29:50
+             ...      
+1292   0 days 00:04:24
+1293   0 days 00:06:59
+1294   0 days 00:15:23
+1295   0 days 00:11:13
+1296   0 days 00:11:19
+Name: durationSecs, Length: 1297, dtype: timedelta64[s]
+'''
+
 # Add number of tags
 video_df['tagsCount'] = video_df['tags'].apply(lambda x: 0 if x is None else len(x))
+
+'''
+0       34
+1        0
+2       25
+3        0
+4       11
+        ..
+1292    27
+1293    30
+1294    33
+1295    31
+1296    21
+Name: tagsCount, Length: 1297, dtype: int64
+'''
 
 # Comments and likes per 1000 view ratio
 video_df['likeRatio'] = video_df['likeCount']/ video_df['viewCount'] * 1000
 video_df['commentRatio'] = video_df['commentCount']/ video_df['viewCount'] * 1000
 
+'''
+0        2645000
+1       26008000
+2       25822000
+3       38789000
+4       25664000
+          ...   
+1292    12017000
+1293     8650000
+1294    16215000
+1295    13134000
+1296    27702000
+Name: viewCount, Length: 1297, dtype: int64
+'''
+
 # Title character length
 video_df['titleLength'] = video_df['title'].apply(lambda x: len(x))
+
+'''
+0       38
+1       31
+2       44
+3       26
+4       65
+        ..
+1292    92
+1293    66
+1294    71
+1295    68
+1296    74
+Name: titleLength, Length: 1297, dtype: int64
+'''
 
 ```
 
@@ -292,6 +374,7 @@ sns.scatterplot(data = video_df, x = "commentCount", y = "viewCount", ax=ax[0])
 sns.scatterplot(data = video_df, x = "likeCount", y = "viewCount", ax=ax[1])
 ```
 
+<img width="548" alt="Screenshot 2023-04-06 at 14 53 24" src="https://user-images.githubusercontent.com/109058050/230384272-4ae98a61-ffcd-4230-8b10-5d4b9c3b1371.png">
 
 Now we will take a look at the correlation if we look at the comment ratio and like ratio instead of the absolute number.
 
@@ -302,24 +385,29 @@ sns.scatterplot(data = video_df, x = "commentRatio", y = "viewCount", ax=ax[0])
 sns.scatterplot(data = video_df, x = "likeRatio", y = "viewCount", ax=ax[1])
 ```
 
+<img width="541" alt="Screenshot 2023-04-06 at 14 54 00" src="https://user-images.githubusercontent.com/109058050/230384411-54cc96af-c84d-423e-9b55-8e822dad179c.png">
+
 ## Does the video duration matter for views and interaction (likes/ comments)?
 
 ```python
 sns.scatterplot(data = video_df, x = "durationSecs", y = "viewCount")
 ```
 
+<img width="544" alt="Screenshot 2023-04-06 at 14 54 29" src="https://user-images.githubusercontent.com/109058050/230384505-244422df-84a9-46bd-8a6a-d44c0e3d06fa.png">
+
 
 Now we plot the duration against comment count and like count. It can be seen that actually shorter videos tend to get more likes and comments than very long videos.
+
 ```python
 fig, ax =plt.subplots(1,2)
 sns.scatterplot(data = video_df, x = "durationSecs", y = "commentCount", ax=ax[0])
 sns.scatterplot(data = video_df, x = "durationSecs", y = "likeCount", ax=ax[1])
 ```
 
+<img width="550" alt="Screenshot 2023-04-06 at 14 54 48" src="https://user-images.githubusercontent.com/109058050/230384592-e1b59a7c-94e0-44d6-8b6f-d01f0335e69b.png">
+
 
 ## Does title length matter for views?
-
-
 
 There is no clear relationship between title length and views as seen the scatterplot below, but most-viewed videos tend to have average title length of 30-70 characters.
 
@@ -327,6 +415,7 @@ There is no clear relationship between title length and views as seen the scatte
 sns.scatterplot(data = video_df, x = "titleLength", y = "viewCount")
 ```
 
+<img width="544" alt="Screenshot 2023-04-06 at 14 55 11" src="https://user-images.githubusercontent.com/109058050/230384688-b4c17f42-7a80-4eb8-8e11-8af0bb5da580.png">
 
 
 References/ Resources used:
