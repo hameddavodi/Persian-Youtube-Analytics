@@ -225,26 +225,18 @@ for c in channel_data['channelName'].unique():
     print("Getting video information from channel: " + c)
     playlist_id = channel_data.loc[channel_data['channelName']== c, 'playlistId'].iloc[0]
     video_ids = get_video_ids(youtube, playlist_id)
-    
-    # get video data
     video_data = get_video_details(youtube, video_ids)
-    # get comment data
-    comments_data = get_comments_in_videos(youtube, video_ids)
-
-    # append video data together and comment data toghether
-    video_df = pd.concat([video_data], ignore_index=True)
-    comments_df = pd.concat([comments_data], ignore_index=True)
+    video_df = pd.concat([video_df, video_data], ignore_index=True)
 ```
 comments_data
-> a table of "914 rows × 2 columns"
+> a table of "4105 rows × 2 columns"
 
 video_data
-> a table of "917 rows × 13 columns"
+> a table of "4105 rows × 13 columns"
 
 And we have turned them into dataframes     : )
 
-
-Note: In this step we could use `video_df = video_df.append(video_data, ignore_index=True)`, but in some cases I got an error and then I used concat to tackle the problem.
+Note: In this step we could use `video_df = video_df.append(video_data, ignore_index=True)`, but in some cases I got an error and then I used concat to tackle the problem and to have better performance.
 
 So to prevent further use of quotas of API key lets save data in csv files:
 
@@ -253,7 +245,6 @@ So to prevent further use of quotas of API key lets save data in csv files:
 video_df.to_csv('video_data_top10_channels.csv')
 comments_df.to_csv('comments_data_top10_channels.csv')
 ```
-
 In this step, we convert these count columns into integer.
 
 ```python
