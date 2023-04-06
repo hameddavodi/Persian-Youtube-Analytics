@@ -45,18 +45,21 @@ Step 4: Collect channel IDs to start research on them.
    # youtube: the build object from googleapiclient.discovery
    # channels_ids: list of channel IDs
     
-api_key = 'AIzaSyB-4NIQtecQPbRX7TWKphThkb9_Brh2wL4' 
-
+api_key = '*******' 
 
 channel_ids = ['UCJk9mjbfuZ3k7oiWLlbKYFA', # Persian Rap Reaction
                'CB0qQXpkEjVK2_yd5w-Khgw', # RealPelmx
                'UCoOjmdECYvybtOOKtlwvsAw', # RadioActive Zone
                'UCV_bYCslgWyIZWH_Jita9rw', # MA2YAR TV
+               'UCAlNRreMmvbkNobqs7LeFTw', # React Rez
+               'UCAlNRreMmvbkNobqs7LeFTw', # Sepehr Khalse
+               'UCiyAlgoS8YyJXvMyPMUaIEA', # Madbes
+               'UCi6ZmAWVZlm08Tu6dtqY16A', # DornaMasih
+               'UCT8oY_UP3fb6e7yEuRf_WGA', # Cheelpi
+               
               ]
 
 youtube = build('youtube', 'v3', developerKey=api_key)
-
-
 
 ```
 Then to collect data from selected channels I can write following functions:
@@ -195,22 +198,22 @@ Some Other type changes:
 # Convert count columns to numeric columns
 numeric_cols = ['subscribers', 'views', 'totalVideos']
 channel_data[numeric_cols] = channel_data[numeric_cols].apply(pd.to_numeric, errors='coerce')
+```
 
-
+### Plot Subscribers
+```python
 sns.set(rc={'figure.figsize':(10,8)})
 ax = sns.barplot(x='channelName', y='subscribers', data=channel_data.sort_values('subscribers', ascending=False))
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
 plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
-
-ax = sns.barplot(x='channelName', y='views', data=channel_data.sort_values('views', ascending=False))
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
-plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
 ```
 
-<img width="551" alt="Screenshot 2023-04-06 at 14 43 28" src="https://user-images.githubusercontent.com/109058050/230381995-74f0088a-f28d-4304-9828-efd4e2274413.png">
+
+<img width="581" alt="Screenshot 2023-04-06 at 16 39 00" src="https://user-images.githubusercontent.com/109058050/230412803-aeaae366-4d4c-4237-9d11-3897328a7e70.png">
 
 
-and creating dataframes:
+
+And creating dataframes:
 
 ```python
 # Create a dataframe with video statistics and comments from all channels
@@ -233,12 +236,12 @@ for c in channel_data['channelName'].unique():
     comments_df = pd.concat([comments_data], ignore_index=True)
 ```
 comments_data
-> a table of "1297 rows × 2 columns"
+> a table of "914 rows × 2 columns"
 
 video_data
-> a table of "1297 rows × 13 columns"
+> a table of "917 rows × 13 columns"
 
-and we have turned them into dataframes
+And we have turned them into dataframes     : )
 
 
 Note: In this step we could use `video_df = video_df.append(video_data, ignore_index=True)`, but in some cases I got an error and then I used concat to tackle the problem.
@@ -258,8 +261,7 @@ cols = ['viewCount', 'likeCount',  'commentCount']
 video_df[cols] = video_df[cols].apply(pd.to_numeric, errors='coerce', axis=1)
 ```
 
-
-I aim to enhance the data for future examinations by performing the following tasks:
+I aim to munipulate and edit the data for future examinations by performing the following tasks:
 
    - Generating a new column that displays the published date of the video and also indicates the day of the week on which it was published. This information will be beneficial for future analysis.
 
