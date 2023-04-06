@@ -7,6 +7,8 @@ First, we need to set up our development environment. We will be using Python 3 
 
 `pip install --upgrade google-api-python-client`
 
+Tip: if you get error of module not found try different environments and pip3 along with google documentations to upgrade lib.
+
 With our development environment set up, we can now start writing some code. The first thing we need to do is get a developer key from Google. A developer key is required in order to useYouTube’s Data API. You can get a developer key by creating a new project in theGoogle Developers Console and then enabling the YouTube Data API v3 for that project. Once you have obtained a developer key, we can initialize the Google APIs Client Library for Python like so:
 ```python
 from googleapiclient.discovery import build 
