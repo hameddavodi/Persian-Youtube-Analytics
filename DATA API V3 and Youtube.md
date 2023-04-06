@@ -1,19 +1,14 @@
 ## Exploratory Data Analysing for Persian Youtubers
 
-Explanatory Data Analysis (EDA) is a crucial step in data analysis that helps to understand the data and extract meaningful insights from it. It is a process of summarizing the main characteristics of a dataset using visual methods such as histograms, scatter plots, box plots, etc., and identifying patterns, trends, and relationships between variables.
+Exploratory Data Analysis (EDA) is an essential stage in data analysis, which aids in comprehending the data and obtaining valuable insights from it. It involves summarizing the primary traits of a dataset through visual techniques such as histograms, scatter plots, box plots, etc., to identify patterns, trends, and correlations among variables.
 
 In this project, I plan to explore the following:
 
   - Learn about Youtube API and how to obtain video data.
-  - Analyze video data and verify different common “myths” about   what makes a video do well on Youtube. For example:
   - Does the number of likes and comments matter for a video to get more views?
   - Does the video duration matter for views and interaction (likes/ comments)?
   - Does title length matter for views?
   - How many tags do good performing videos have? What are the common tags among these videos?
-  - Across all the creators I take into consideration, how often do they upload new videos? On which days in the week?
-  - Explore the trending topics using NLP techniques
-  - Which popular topics are being covered in the videos (e.g. using wordcloud for video titles)?
-  - Which questions are being asked in the comment sections in the videos?
 
 Also pre-requisites libraries for this project are:
 
@@ -34,14 +29,6 @@ sns.set(style="darkgrid", color_codes=True)
 # Google API
 from googleapiclient.discovery import build
 
-#NLP libraries
-
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-nltk.download('stopwords')
-nltk.download('punkt')
-from wordcloud import WordCloud
 ```
 ## Dataset Collection and API connection:
 
@@ -198,6 +185,13 @@ channel_data = get_channel_stats(youtube, channel_ids)
 channel_data
 
 ```
+This code produce the following outcome:
+`
+ 	channelName 	subscribers 	views 	totalVideos 	playlistId
+0 	Persian Rap Reaction 	41500 	18096597 	914 	UUJk9mjbfuZ3k7oiWLlbKYFA
+1 	MA2YAR TV 	9030 	623573 	47 	UUV_bYCslgWyIZWH_Jita9rw
+2 	RadioActive Zone 	131000 	58079956 	1297 	UUoOjmdECYvybtOOKtlwvsAw
+`
 
 Some Other type changes:
 
