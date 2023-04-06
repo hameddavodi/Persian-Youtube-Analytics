@@ -1,4 +1,4 @@
-## Exploratory Data Analysing for Persian Youtubers
+## Exploratory Data Analysing for Persian rap Youtubers
 
 Exploratory Data Analysis (EDA) is an essential stage in data analysis, which aids in comprehending the data and obtaining valuable insights from it. It involves summarizing the primary traits of a dataset through visual techniques such as histograms, scatter plots, box plots, etc., to identify patterns, trends, and correlations among variables.
 
