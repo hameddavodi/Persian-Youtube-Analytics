@@ -290,14 +290,6 @@ video_df['titleLength'] = video_df['title'].apply(lambda x: len(x))
 
 ```
 
-## Views distribution per channel:
-
-```python
-plt.rcParams['figure.figsize'] = (18, 6)
-sns.violinplot(video_df['channelTitle'], video_df['viewCount'], palette = 'pastel')
-plt.title('Views per channel', fontsize = 14)
-plt.show()
-```
 ## Does the number of likes and comments matter for a video to get more views?
 
 ```python
@@ -319,7 +311,7 @@ sns.scatterplot(data = video_df, x = "likeRatio", y = "viewCount", ax=ax[1])
 ## Does the video duration matter for views and interaction (likes/ comments)?
 
 ```python
-sns.histplot(data=video_df[video_df['durationSecs'] < 10000], 
+sns.scatterplot(data = video_df, x = "durationSecs", y = "viewCount")
 ```
 
 
@@ -339,28 +331,6 @@ There is no clear relationship between title length and views as seen the scatte
 
 ```python
 sns.scatterplot(data = video_df, x = "titleLength", y = "viewCount")
-```
-
-## Wordcloud for words in title:
-
-
-
-As I'm interested to see what the creators are making videos about and which terms most frequently appear in their video titles, I will create a wordcloud for the most common words. We first need to remove the stopwords such as "you", "I", "the", etc. which do note contribute a lot to the meaning of the title.
-```python
-stop_words = set(stopwords.words('english'))
-video_df['title_no_stopwords'] = video_df['title'].apply(lambda x: [item for item in str(x).split() if item not in stop_words])
-
-all_words = list([a for b in video_df['title_no_stopwords'].tolist() for a in b])
-all_words_str = ' '.join(all_words) 
-
-def plot_cloud(wordcloud):
-    plt.figure(figsize=(30, 20))
-    plt.imshow(wordcloud) 
-    plt.axis("off");
-
-wordcloud = WordCloud(width = 2000, height = 1000, random_state=1, background_color='black', 
-                      colormap='viridis', collocations=False).generate(all_words_str)
-plot_cloud(wordcloud)
 ```
 
 
