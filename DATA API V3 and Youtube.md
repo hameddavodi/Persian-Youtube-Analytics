@@ -398,13 +398,33 @@ sns.scatterplot(data = video_df, x = "titleLength", y = "viewCount")
 <img width="578" alt="Screenshot 2023-04-07 at 12 39 38" src="https://user-images.githubusercontent.com/109058050/230595046-f86a8dd7-0d2a-4fa8-88a9-e97fcdce3d6d.png">
 
 
-References/ Resources used:
+## What about the relationship between published Day and view Count?
 
-[1] Youtube API. Avaiable at https://developers.google.com/youtube/v3
+First I wanna describe the Published Day stats:
 
-[2] Converting video durations to time function. https://stackoverflow.com/questions/15596753/how-do-i-get-video-durations-with-youtube-api-version-3
+```python
+video_df['pushblishDayName'].describe()
+```
+count         4105
+unique           7
+top       Thursday
+freq           614
+Name: pushblishDayName, dtype: object
 
-[3] P. Covington, J. Adams, E. Sargin. The youtube video recommendation system. In Proceedings of the Fourth ACM Conference on Recommender Systems, RecSys '16, pages 191-198, New York, NY, USA, 2016. ACM.
+Ploting the relationship between published day and view count:
+
+```python
+sns.barplot(x=video_df['pushblishDayName'], y=video_df['viewCount'], data=video_df.sort_values(['viewCount']))
+
+plt.xlabel('Publish Day')
+plt.ylabel('View Count')
+plt.title('View Count by Publish Day')
+
+plt.show()
+```
+<img width="978" alt="Screenshot 2023-04-07 at 13 09 53" src="https://user-images.githubusercontent.com/109058050/230599096-54ac90ca-562f-485d-9ae6-b36c6d317183.png">
+
+
 
 
 
