@@ -183,11 +183,7 @@ To get channel statistics:
 
 channel_data = get_channel_stats(youtube, channel_ids)
 channel_data
-
 ```
-This code produce the following outcome:
-
-<img width="547" alt="Screenshot 2023-04-06 at 14 42 50" src="https://user-images.githubusercontent.com/109058050/230381872-4cc0c56b-03f8-44ea-9bab-d98c2f75be7e.png">
 
 Some Other type changes:
 
@@ -207,8 +203,6 @@ plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
 
 
 <img width="581" alt="Screenshot 2023-04-06 at 16 39 00" src="https://user-images.githubusercontent.com/109058050/230412803-aeaae366-4d4c-4237-9d11-3897328a7e70.png">
-
-
 
 And creating dataframes:
 
@@ -356,6 +350,11 @@ Name: titleLength, Length: 1297, dtype: int64
 
 ```
 
+## Now we our data is ready to be analysed. First thing to do is to describe tha data:
+
+<img width="860" alt="Screenshot 2023-04-07 at 12 36 21" src="https://user-images.githubusercontent.com/109058050/230594537-6c17ee5c-3463-4f28-a8cd-6f0766d3f6f5.png">
+
+
 ## Does the number of likes and comments matter for a video to get more views?
 
 ```python
@@ -397,7 +396,7 @@ There is no clear relationship between title length and views as seen the scatte
 sns.scatterplot(data = video_df, x = "titleLength", y = "viewCount")
 ```
 
-<img width="544" alt="Screenshot 2023-04-06 at 14 55 11" src="https://user-images.githubusercontent.com/109058050/230384688-b4c17f42-7a80-4eb8-8e11-8af0bb5da580.png">
+<img width="578" alt="Screenshot 2023-04-07 at 12 39 38" src="https://user-images.githubusercontent.com/109058050/230595046-f86a8dd7-0d2a-4fa8-88a9-e97fcdce3d6d.png">
 
 
 References/ Resources used:
