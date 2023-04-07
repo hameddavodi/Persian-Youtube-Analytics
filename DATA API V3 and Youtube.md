@@ -8,7 +8,7 @@ In this project, I plan to explore the following:
   - Does the number of likes and comments matter for a video to get more views?
   - Does the video duration matter for views and interaction (likes/ comments)?
   - Does title length matter for views?
-  - How many tags do good performing videos have? What are the common tags among these videos?
+
 
 Also pre-requisites libraries for this project are:
 
@@ -29,7 +29,7 @@ from googleapiclient.discovery import build
 ```
 ## Dataset Collection and API connection:
 
-Step 1: create a project on Google Developers Console.
+Step 1: Create a project on Google Developers Console.
 Step 2: Request an authorization credential (API key).
 Step 3: Enable API.
 Step 4: Collect channel IDs to start research on them. 
@@ -201,7 +201,6 @@ ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.forma
 plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
 ```
 
-
 <img width="581" alt="Screenshot 2023-04-06 at 16 39 00" src="https://user-images.githubusercontent.com/109058050/230412803-aeaae366-4d4c-4237-9d11-3897328a7e70.png">
 
 And creating dataframes:
@@ -350,7 +349,7 @@ Name: titleLength, Length: 1297, dtype: int64
 
 ```
 
-## Now we our data is ready to be analysed. First thing to do is to describe tha data:
+## Now our data is ready to be analysed. First thing to do is to describe the data:
 
 <img width="860" alt="Screenshot 2023-04-07 at 12 36 21" src="https://user-images.githubusercontent.com/109058050/230594537-6c17ee5c-3463-4f28-a8cd-6f0766d3f6f5.png">
 
