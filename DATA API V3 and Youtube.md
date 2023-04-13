@@ -195,7 +195,7 @@ channel_data[numeric_cols] = channel_data[numeric_cols].apply(pd.to_numeric, err
 
 ### Plot Subscribers
 ```python
-sns.set(rc={'figure.figsize':(10,8)})
+sns.set(rc={'figure.figsize':(12,10)})
 ax = sns.barplot(x='channelName', y='subscribers', data=channel_data.sort_values('subscribers', ascending=False))
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x/1000) + 'K'))
 plot = ax.set_xticklabels(ax.get_xticklabels(),rotation = 90)
